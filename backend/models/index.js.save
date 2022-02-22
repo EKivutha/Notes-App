@@ -1,0 +1,30 @@
+import Sequalize from 'sequalize';
+
+const sequalize = new Sequalize(
+process.env.DATABASE,
+process.env.DATABASE_USER,
+process.env.DATABASE_PASSWORD,
+{
+dialect: "postgres"
+}
+);
+
+const models = {
+Note: sequalize.import('./notes')
+};
+Object.keys(models).forEach((key) => {
+if ('assocaite' in models[key]){
+models[key].associate(models);
+}
+});
+const note = (sequalize, DataTypes) => {
+const Note = sequalize.define("note", {
+text: DataTypes.STRING});
+return Note;
+};
+
+
+export default note
+export deafult models;
+
+export {sequalize};
